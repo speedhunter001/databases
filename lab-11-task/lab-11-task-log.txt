@@ -1,0 +1,262 @@
+mysql> 
+mysql> 
+mysql> use person;
+Database changed
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> DELIMITER //
+mysql> CREATE PROCEDURE insert_data_into_users(IN user_id INT, IN username VARCHAR(15), IN password VARCHAR(15), IN email VARCHAR(20) )
+    -> BEGIN
+    -> INSERT INTO Users VALUES (user_id, username, password, email);
+    -> END //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> DELIMITER ;
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> DELIMITER //
+mysql> CREATE TRIGGER update_summary_after_insert
+    -> AFTER INSERT 
+    -> ON person.Users
+    -> FOR EACH ROW
+    -> BEGIN
+    -> SET @total_users = (SELECT COUNT(user_id) FROM Users);
+    -> SET @yahoo = (SELECT COUNT(*) FROM Users WHERE email LIKE '%yahoo.com');
+    -> SET @hotmail = (SELECT COUNT(*) FROM Users WHERE email LIKE '%hotmail.com');
+    -> SET @gmail = (SELECT COUNT(*) FROM Users WHERE email LIKE '%gmail.com');
+    -> 
+    -> UPDATE Summary 
+    -> SET total_users = @total_users,yahoo = @yahoo,hotmail = @hotmail,gmail = @gmail;
+    -> END //
+Query OK, 0 rows affected (0.66 sec)
+
+mysql> DELIMITER ;
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> DELIMITER //
+mysql> CREATE TRIGGER update_summary_after_update
+    -> AFTER UPDATE
+    -> ON person.Users
+    -> FOR EACH ROW
+    -> BEGIN
+    -> SET @total_users = (SELECT COUNT(user_id) FROM Users);
+    -> SET @yahoo = (SELECT COUNT(*) FROM Users WHERE email LIKE '%yahoo.com');
+    -> SET @hotmail = (SELECT COUNT(*) FROM Users WHERE email LIKE '%hotmail.com');
+    -> SET @gmail = (SELECT COUNT(*) FROM Users WHERE email LIKE '%gmail.com');
+    -> 
+    -> UPDATE Summary 
+    -> SET total_users = @total_users,yahoo = @yahoo,hotmail = @hotmail,gmail = @gmail;
+    -> END //
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> DELIMITER ;
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> DELIMITER //
+mysql> CREATE TRIGGER update_summary_after_delete
+    -> AFTER DELETE
+    -> ON person.Users
+    -> FOR EACH ROW
+    -> BEGIN
+    -> SET @total_users = (SELECT COUNT(user_id) FROM Users);
+    -> SET @yahoo = (SELECT COUNT(*) FROM Users WHERE email LIKE '%yahoo.com');
+    -> SET @hotmail = (SELECT COUNT(*) FROM Users WHERE email LIKE '%hotmail.com');
+    -> SET @gmail = (SELECT COUNT(*) FROM Users WHERE email LIKE '%gmail.com');
+    -> 
+    -> UPDATE Summary 
+    -> SET total_users = @total_users,yahoo = @yahoo,hotmail = @hotmail,gmail = @gmail;
+    -> END //
+Query OK, 0 rows affected (0.16 sec)
+
+mysql> DELIMITER ;
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> insert into Summary Values(1, 0, 0, 0, 0);
+Query OK, 1 row affected (0.37 sec)
+
+mysql> select * from Summary;
++----+-------------+-------+---------+-------+
+| id | total_users | Yahoo | Hotmail | Gmail |
++----+-------------+-------+---------+-------+
+|  1 |           0 |     0 |       0 |     0 |
++----+-------------+-------+---------+-------+
+1 row in set (0.00 sec)
+
+mysql> call insert_data_into_users(1, 'abc123', 'def32', 'abc123@yahoo.com');
+Query OK, 1 row affected (0.13 sec)
+
+mysql> select * from Summary;
++----+-------------+-------+---------+-------+
+| id | total_users | Yahoo | Hotmail | Gmail |
++----+-------------+-------+---------+-------+
+|  1 |           1 |     1 |       0 |     0 |
++----+-------------+-------+---------+-------+
+1 row in set (0.00 sec)
+
+mysql> call insert_data_into_users(2, 'xyz789', 'vbn123', 'xyz789@yahoo.com');
+Query OK, 1 row affected (0.16 sec)
+
+mysql> select * from Summary;
++----+-------------+-------+---------+-------+
+| id | total_users | Yahoo | Hotmail | Gmail |
++----+-------------+-------+---------+-------+
+|  1 |           2 |     2 |       0 |     0 |
++----+-------------+-------+---------+-------+
+1 row in set (0.00 sec)
+
+mysql> call insert_data_into_users(3, 'am', 'vbn', 'am@hotmail.com');
+Query OK, 1 row affected (0.08 sec)
+
+mysql> select * from Summary;
++----+-------------+-------+---------+-------+
+| id | total_users | Yahoo | Hotmail | Gmail |
++----+-------------+-------+---------+-------+
+|  1 |           3 |     2 |       1 |     0 |
++----+-------------+-------+---------+-------+
+1 row in set (0.00 sec)
+
+mysql> call insert_data_into_users(4, 'ba', 'nee', 'ba@hotmail.com');
+Query OK, 1 row affected (0.16 sec)
+
+mysql> select * from Summary;
++----+-------------+-------+---------+-------+
+| id | total_users | Yahoo | Hotmail | Gmail |
++----+-------------+-------+---------+-------+
+|  1 |           4 |     2 |       2 |     0 |
++----+-------------+-------+---------+-------+
+1 row in set (0.00 sec)
+
+mysql> call insert_data_into_users(5, 'bhan', 'jeee', 'bhan@gmail.com');
+Query OK, 1 row affected (0.13 sec)
+
+mysql> select * from Summary;
++----+-------------+-------+---------+-------+
+| id | total_users | Yahoo | Hotmail | Gmail |
++----+-------------+-------+---------+-------+
+|  1 |           5 |     2 |       2 |     1 |
++----+-------------+-------+---------+-------+
+1 row in set (0.00 sec)
+
+mysql> call insert_data_into_users(6, 'super', 'brainless', 'brainless@gmail.com');
+Query OK, 1 row affected (0.17 sec)
+
+mysql> select * from Summary;
++----+-------------+-------+---------+-------+
+| id | total_users | Yahoo | Hotmail | Gmail |
++----+-------------+-------+---------+-------+
+|  1 |           6 |     2 |       2 |     2 |
++----+-------------+-------+---------+-------+
+1 row in set (0.00 sec)
+
+mysql> call insert_data_into_users(7, 'pythe', 'snake123', 'future@yahoo.com');
+Query OK, 1 row affected (0.12 sec)
+
+mysql> select * from Summary;
++----+-------------+-------+---------+-------+
+| id | total_users | Yahoo | Hotmail | Gmail |
++----+-------------+-------+---------+-------+
+|  1 |           7 |     3 |       2 |     2 |
++----+-------------+-------+---------+-------+
+1 row in set (0.00 sec)
+
+mysql> call insert_data_into_users(8, 'dumb', 'snake', 'dumb@yahoo.com');
+Query OK, 1 row affected (0.17 sec)
+
+mysql> select * from Summary;
++----+-------------+-------+---------+-------+
+| id | total_users | Yahoo | Hotmail | Gmail |
++----+-------------+-------+---------+-------+
+|  1 |           8 |     4 |       2 |     2 |
++----+-------------+-------+---------+-------+
+1 row in set (0.00 sec)
+
+mysql> call insert_data_into_users(9, 'genius', 'great', 'genius@hotmail.com');
+Query OK, 1 row affected (0.13 sec)
+
+mysql> select * from Summary;
++----+-------------+-------+---------+-------+
+| id | total_users | Yahoo | Hotmail | Gmail |
++----+-------------+-------+---------+-------+
+|  1 |           9 |     4 |       3 |     2 |
++----+-------------+-------+---------+-------+
+1 row in set (0.00 sec)
+
+mysql> call insert_data_into_users(10, 'useless', 'nobita', 'nobody@gmail.com');
+Query OK, 1 row affected (0.28 sec)
+
+mysql> select * from Summary;
++----+-------------+-------+---------+-------+
+| id | total_users | Yahoo | Hotmail | Gmail |
++----+-------------+-------+---------+-------+
+|  1 |          10 |     4 |       3 |     3 |
++----+-------------+-------+---------+-------+
+1 row in set (0.00 sec)
+
+mysql> 
+mysql> 
+mysql> 
+mysql>
+mysql> 
+mysql> UPDATE Users SET email='nobody@hotmail.com' WHERE user_id=10;
+Query OK, 1 row affected (0.29 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from Summary;
++----+-------------+-------+---------+-------+
+| id | total_users | Yahoo | Hotmail | Gmail |
++----+-------------+-------+---------+-------+
+|  1 |          10 |     4 |       4 |     2 |
++----+-------------+-------+---------+-------+
+1 row in set (0.00 sec)
+
+mysql> 
+mysql> 
+mysql> 
+mysql> DELETE FROM Users WHERE user_id=7;
+Query OK, 1 row affected (0.16 sec)
+
+mysql> select * from Summary;
++----+-------------+-------+---------+-------+
+| id | total_users | Yahoo | Hotmail | Gmail |
++----+-------------+-------+---------+-------+
+|  1 |           9 |     3 |       4 |     2 |
++----+-------------+-------+---------+-------+
+1 row in set (0.00 sec)
+
+mysql> exit

@@ -1,0 +1,100 @@
+mysql> USE person;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> CREATE INDEX email_index 
+    -> ON Users(email);
+Query OK, 0 rows affected (0.30 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> CREATE INDEX username_password_index
+    -> ON Users(username, password);
+Query OK, 0 rows affected (0.51 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> SHOW INDEX 
+    -> FROM Users/G;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '/G' at line 2
+mysql> 
+mysql> 
+mysql> 
+mysql> SHOW INDEX  FROM Users\G;
+*************************** 1. row ***************************
+        Table: Users
+   Non_unique: 0
+     Key_name: PRIMARY
+ Seq_in_index: 1
+  Column_name: user_id
+    Collation: A
+  Cardinality: 9
+     Sub_part: NULL
+       Packed: NULL
+         Null: 
+   Index_type: BTREE
+      Comment: 
+Index_comment: 
+*************************** 2. row ***************************
+        Table: Users
+   Non_unique: 1
+     Key_name: email_index
+ Seq_in_index: 1
+  Column_name: email
+    Collation: A
+  Cardinality: 9
+     Sub_part: NULL
+       Packed: NULL
+         Null: YES
+   Index_type: BTREE
+      Comment: 
+Index_comment: 
+*************************** 3. row ***************************
+        Table: Users
+   Non_unique: 1
+     Key_name: username_password_index
+ Seq_in_index: 1
+  Column_name: username
+    Collation: A
+  Cardinality: 9
+     Sub_part: NULL
+       Packed: NULL
+         Null: YES
+   Index_type: BTREE
+      Comment: 
+Index_comment: 
+*************************** 4. row ***************************
+        Table: Users
+   Non_unique: 1
+     Key_name: username_password_index
+ Seq_in_index: 2
+  Column_name: password
+    Collation: A
+  Cardinality: 9
+     Sub_part: NULL
+       Packed: NULL
+         Null: YES
+   Index_type: BTREE
+      Comment: 
+Index_comment: 
+4 rows in set (0.00 sec)
+
+ERROR: 
+No query specified
+
+mysql> exit
+
+
+Implicit index are those indexes which are created automatically by database for primary key constraints and unique constarints while Unique indexes are those indexes which are created by the user and these do not allow any duplicate values to be inserted into the table.

@@ -1,0 +1,47 @@
+// Setup initial constraints
+CREATE CONSTRAINT ON (a:PERSON) assert a.number is unique;
+CREATE CONSTRAINT ON (b:CALL) assert b.id is unique;
+CREATE CONSTRAINT ON (c:LOCATION) assert c.cell_tower is unique;
+CREATE CONSTRAINT ON (d:STATE) assert d.name is unique;
+CREATE CONSTRAINT ON (e:CITY) assert e.name is unique;
+
+// file should be saved in /var/lib/neo4j/import/ in default mode and for changing this default option see documentation
+// Create the appropriate nodes // USING PERIODIC COMMIT 1000
+LOAD CSV WITH HEADERS FROM "file:///dummy-data-2.csv" AS line  WITH line WHERE line.ID is NOT NULL
+MERGE (p1:PERSON {number: line.CALLING_NBR})
+ON CREATE SET p1.first_name = line.FIRST_NAME, p1.last_name = line.LAST_NAME, p1.full_name = line.FULL_NAME
+ON MATCH SET p1.first_name = line.FIRST_NAME, p1.last_name = line.LAST_NAME, p1.full_name = line.FULL_NAME
+MERGE (p2:PERSON {number: line.CALLED_NBR})
+MERGE (c:CALL {id: line.ID})
+ON CREATE SET c.start = toInteger(line.START_DATE), c.end= toInteger(line.END_DATE), c.duration = line.DURATION
+MERGE (l:LOCATION {cell_tower: line.CELL_SITE})
+ON CREATE SET l.address= line.ADDRESS_CELL_SITE, l.state = line.STATE, l.city = line.CITY
+MERGE (ci:CITY {name: line.CITY})
+MERGE (s:STATE {name: line.STATE})
+
+// Setup proper indexing
+DROP CONSTRAINT ON (a:PERSON) ASSERT a.number IS UNIQUE;
+DROP CONSTRAINT ON (a:CALL) ASSERT a.id IS UNIQUE;
+DROP CONSTRAINT ON (a:LOCATION) ASSERT a.cell_tower IS UNIQUE;
+CREATE INDEX ON :PERSON(number);
+CREATE INDEX ON :CALL(id);
+CREATE INDEX ON :LOCATION(cell_tower);
+
+
+// Create relationships between people and calls //USING PERIODIC COMMIT 1000
+LOAD CSV WITH HEADERS FROM "file:///dummy-data-2.csv" AS line
+MATCH (a:PERSON {number: line.CALLING_NBR}),(b:PERSON {number: line.CALLED_NBR}),(c:CALL {id: line.ID})
+CREATE (a)-[:MADE_CALL]->(c)-[:RECEIVED_CALL]->(b)
+
+//Create relationships between calls and locations
+LOAD CSV WITH HEADERS FROM "file:///dummy-data-2.csv" AS line
+MATCH (a:CALL {id: line.ID}), (b:LOCATION {cell_tower: line.CELL_SITE})
+CREATE (a)-[:LOCATED_IN]->(b)
+
+//Create relationships between locations, cities and states
+LOAD CSV WITH HEADERS FROM "file:///dummy-data-2.csv" AS line
+MATCH (a:LOCATION {cell_tower: line.CELL_SITE}), (b:STATE {name: line.STATE}), (c:CITY {name: line.CITY})
+CREATE (b)<-[:HAS_STATE]-(a)-[:HAS_CITY]->(c)
+
+// Query to find the people who called at this given time
+MATCH (ca:CALL)-[:LOCATED_IN]->(l:LOCATION) WHERE l.cell_tower = '88' OR l.cell_tower = '89' AND  1585039850 < toInteger(ca.start) AND toInteger(ca.start) < 1585041000 WITH ca, l MATCH (p:PERSON)-[:MADE_CALL]->(ca)-[:RECEIVED_CALL]->(d:PERSON) RETURN p.full_name as caller, d.full_name as called, ca.start as time, ca.duration as duration, l.address as address  // 1585039850 is 1:50pm and 1585039850 is 2:10pm

@@ -1,0 +1,248 @@
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> source football.sql
+Query OK, 1 row affected (0.01 sec)
+
+Database changed
+Query OK, 0 rows affected (0.45 sec)
+
+Query OK, 0 rows affected (0.37 sec)
+
+Query OK, 0 rows affected (0.34 sec)
+
+Query OK, 1 row affected (0.06 sec)
+
+Query OK, 1 row affected (0.04 sec)
+
+Query OK, 1 row affected (0.09 sec)
+
+Query OK, 1 row affected (0.09 sec)
+
+Query OK, 1 row affected (0.04 sec)
+
+Query OK, 1 row affected (0.04 sec)
+
+Query OK, 1 row affected (0.05 sec)
+
+Query OK, 1 row affected (0.05 sec)
+
+Query OK, 1 row affected (0.04 sec)
+
+Query OK, 1 row affected (0.05 sec)
+
+Query OK, 1 row affected (0.13 sec)
+
+Query OK, 1 row affected (0.05 sec)
+
+mysql> 
+mysql> 
+mysql> 
+mysql> show tables;
++--------------------+
+| Tables_in_football |
++--------------------+
+| eteam              |
+| game               |
+| goal               |
++--------------------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT * FROM eteam;
++-----+----------------+------------------+
+| Id  | Teamname       | Coach            |
++-----+----------------+------------------+
+| CZE | Czech Republic | Michal Bilek     |
+| GRE | Greece         | Fernando Santos  |
+| POL | Poland         | Franciszek Smuda |
+| RUS | Russia         | Guus Hiddink     |
++-----+----------------+------------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM game;
++------+------------+---------------------------+-------+-------+
+| Id   | Mdate      | Stadium                   | Team1 | Team2 |
++------+------------+---------------------------+-------+-------+
+| 1001 | 2012-06-08 | National Stadium, Warsaw  | POL   | GRE   |
+| 1002 | 2012-06-08 | Stadion Miejski (Wroclaw) | RUS   | CZE   |
+| 1003 | 2012-06-12 | Stadion Miejski (Wroclaw) | GRE   | CZE   |
+| 1004 | 2012-06-12 | National Stadium, Warsaw  | POL   | RUS   |
++------+------------+---------------------------+-------+-------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM goal;
++---------+--------+----------------------+-------+
+| Matchid | Teamid | Player               | GTime |
++---------+--------+----------------------+-------+
+|    1001 | POL    | Robert Lewandowski   |    17 |
+|    1001 | GRE    | Dimitris Salpingidis |    51 |
+|    1002 | RUS    | Alan Dzagoev         |    15 |
+|    1004 | RUS    | Roman Pavlyuchenko   |    82 |
++---------+--------+----------------------+-------+
+4 rows in set (0.00 sec)
+
+mysql> 
+mysql> SELECT Player, teamid, Mdate  
+    -> FROM goal
+    -> NATURAL JOIN game
+    -> WHERE goal.Teamid = 'RUS';
++--------------------+--------+------------+
+| Player             | teamid | Mdate      |
++--------------------+--------+------------+
+| Alan Dzagoev       | RUS    | 2012-06-08 |
+| Roman Pavlyuchenko | RUS    | 2012-06-08 |
+| Alan Dzagoev       | RUS    | 2012-06-08 |
+| Roman Pavlyuchenko | RUS    | 2012-06-08 |
+| Alan Dzagoev       | RUS    | 2012-06-12 |
+| Roman Pavlyuchenko | RUS    | 2012-06-12 |
+| Alan Dzagoev       | RUS    | 2012-06-12 |
+| Roman Pavlyuchenko | RUS    | 2012-06-12 |
++--------------------+--------+------------+
+8 rows in set (0.03 sec)
+
+mysql> SELECT DISTINCT(Player, teamid, Mdate)   FROM goal NATURAL JOIN game WHERE goal.Teamid = 'RUS';
+ERROR 1241 (21000): Operand should contain 1 column(s)
+mysql> 
+mysql> SELECT DISTINCT(Player), teamid, Mdate   FROM goal NATURAL JOIN game WHERE goal.Teamid = 'RUS';
++--------------------+--------+------------+
+| Player             | teamid | Mdate      |
++--------------------+--------+------------+
+| Alan Dzagoev       | RUS    | 2012-06-08 |
+| Roman Pavlyuchenko | RUS    | 2012-06-08 |
+| Alan Dzagoev       | RUS    | 2012-06-12 |
+| Roman Pavlyuchenko | RUS    | 2012-06-12 |
++--------------------+--------+------------+
+4 rows in set (0.00 sec)
+
+mysql> # This can also be achieved through subquery but join is better than subquery in this case
+mysql> 
+mysql> 
+mysql> 
+mysql> #2
+mysql> 
+mysql> SELECT Team1, Team2, Player
+    -> FROM game
+    -> INNER JOIN goal
+    -> WHERE game.Id = goal.Matchid AND Player = 'Alan Dzagoev';
++-------+-------+--------------+
+| Team1 | Team2 | Player       |
++-------+-------+--------------+
+| RUS   | CZE   | Alan Dzagoev |
++-------+-------+--------------+
+1 row in set (0.01 sec)
+
+mysql> # Could also be done using subquery
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> #3
+mysql> SELECT Player, Teamid, Coach, GTime FROM goal INNER JOIN eteam WHERE eteam.Id = goal.Teamid AND GTime <=10;
+Empty set (0.00 sec)
+
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> #4
+mysql> SELECT Mdate, Teamname FROM eteam INNER JOIN game WHERE game.Team1 = eteam.Id AND eteam.Coach = 'Fernando Santos';
++------------+----------+
+| Mdate      | Teamname |
++------------+----------+
+| 2012-06-12 | Greece   |
++------------+----------+
+1 row in set (0.00 sec)
+
+mysql> 
+mysql> 
+mysql> 
+mysql> #5
+mysql> SELECT Player
+    -> FROM goal
+    -> INNER JOIN game
+    -> WHERE goal.Matchid = game.Id AND Stadium = 'National Stadium, Warsaw';
++----------------------+
+| Player               |
++----------------------+
+| Robert Lewandowski   |
+| Dimitris Salpingidis |
+| Roman Pavlyuchenko   |
++----------------------+
+3 rows in set (0.00 sec)
+
+mysql> 
+mysql> 
+mysql> #6
+mysql> SELECT Player
+    -> FROM goal
+    -> INNER JOIN game
+    -> WHERE goal.Matchid = game.Id AND Team2 = 'GRE';
++----------------------+
+| Player               |
++----------------------+
+| Robert Lewandowski   |
+| Dimitris Salpingidis |
++----------------------+
+2 rows in set (0.00 sec)
+
+mysql> 
+mysql> 
+mysql> #7
+mysql> 
+mysql> SELECT Teamname, COUNT(Player)  FROM goal INNER JOIN eteam WHERE goal.Teamid = eteam.Id  GROUP BY Teamname;
++----------+---------------+
+| Teamname | COUNT(Player) |
++----------+---------------+
+| Greece   |             1 |
+| Poland   |             1 |
+| Russia   |             2 |
++----------+---------------+
+3 rows in set (0.01 sec)
+
+mysql> 
+mysql> 
+mysql> 
+mysql> #8
+mysql> SELECT Stadium, COUNT(Id)
+    -> FROM goal
+    -> INNER JOIN game
+    -> WHERE goal.Matchid = game.Id 
+    -> GROUP BY Stadium;
++---------------------------+-----------+
+| Stadium                   | COUNT(Id) |
++---------------------------+-----------+
+| National Stadium, Warsaw  |         3 |
+| Stadion Miejski (Wroclaw) |         1 |
++---------------------------+-----------+
+2 rows in set (0.00 sec)
+
+mysql> 
+mysql> 
+mysql> 
+mysql> #9
+mysql> SELECT Matchid, Mdate, COUNT(Teamid) FROM goal INNER JOIN game WHERE goal.Matchid = game.Id AND Teamid = 'POL'  GROUP BY Id;
++---------+------------+---------------+
+| Matchid | Mdate      | COUNT(Teamid) |
++---------+------------+---------------+
+|    1001 | 2012-06-08 |             1 |
++---------+------------+---------------+
+1 row in set (0.00 sec)
+
+mysql> 
+mysql> 
+mysql> 
+mysql> #10
+mysql> SELECT Matchid, Mdate, COUNT(Player) FROM goal  INNER JOIN game WHERE goal.Matchid = game.Id AND Teamid = 'GRE' GROUP BY id;
++---------+------------+---------------+
+| Matchid | Mdate      | COUNT(Player) |
++---------+------------+---------------+
+|    1001 | 2012-06-08 |             1 |
++---------+------------+---------------+
+1 row in set (0.00 sec)
+
+mysql> ^C
+mysql> exit

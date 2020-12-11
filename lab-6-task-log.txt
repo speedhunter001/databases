@@ -1,0 +1,155 @@
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> SELECT DISTINCT EMP_FNAME, EMP_LNAME
+    -> FROM EMPLOYEE NATURAL JOIN HOURS 
+    -> WHERE HOUR_RATE > (SELECT AVG(HOUR_RATE) 
+    -> FROM HOURS
+    -> WHERE DATE_WORKED LIKE '2007-05%');
++-----------+-----------+
+| EMP_FNAME | EMP_LNAME |
++-----------+-----------+
+| Enrica    | Denver    |
+| Mirrelle  | Namowa    |
++-----------+-----------+
+2 rows in set, 1 warning (0.01 sec)
+
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> SELECT DISTINCT PARK_CODE, PARK_NAME
+    -> FROM THEMEPARK NATURAL JOIN TICKET
+    -> WHERE TICKET_PRICE > (SELECT AVG(TICKET_PRICE)
+    ->    FROM TICKET);
++-----------+---------------+
+| PARK_CODE | PARK_NAME     |
++-----------+---------------+
+| SP4533    | AdventurePort |
+| FR1001    | FairyLand     |
+| ZA1342    | GoldTown      |
+| UK3452    | PleasureLand  |
++-----------+---------------+
+4 rows in set (0.00 sec)
+
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> SELECT DISTINCT(EMP_FNAME), EMP_LNAME, (SELECT AVG(HOUR_RATE) 
+    ->   FROM HOURS) AS AVERAGE,  
+    ->  (SELECT AVG(HOUR_RATE) 
+    ->   FROM HOURS)- HOURS_PER_ATTRACT AS DIFFERENCE, 
+    ->  DATE_WORKED
+    -> FROM EMPLOYEE NATURAL JOIN HOURS;
++-----------+------------+----------+------------+-------------+
+| EMP_FNAME | EMP_LNAME  | AVERAGE  | DIFFERENCE | DATE_WORKED |
++-----------+------------+----------+------------+-------------+
+| Emma      | Calderdale | 7.033636 |   1.033636 | 2007-05-18  |
+| Emma      | Calderdale | 7.033636 |   1.033636 | 2007-05-20  |
+| Marshel   | Ricardo    | 7.033636 |   1.033636 | 2007-05-18  |
+| Arif      | Arshad     | 7.033636 |   4.033636 | 2007-05-23  |
+| Arif      | Arshad     | 7.033636 |   1.033636 | 2007-05-21  |
+| Arif      | Arshad     | 7.033636 |   4.033636 | 2007-05-22  |
+| Enrica    | Denver     | 7.033636 |   1.033636 | 2007-05-21  |
+| Enrica    | Denver     | 7.033636 |   1.033636 | 2007-05-22  |
+| Mirrelle  | Namowa     | 7.033636 |   4.033636 | 2007-05-18  |
+| Mirrelle  | Namowa     | 7.033636 |   1.033636 | 2007-05-19  |
++-----------+------------+----------+------------+-------------+
+10 rows in set (0.00 sec)
+
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> SELECT PARK_NAME 
+    -> FROM THEMEPARK 
+    -> WHERE PARK_CODE=ANY(SELECT DISTINCT PARK_CODE 
+    -> FROM SALES);
++--------------+
+| PARK_NAME    |
++--------------+
+| FairyLand    |
+| PleasureLand |
+| GoldTown     |
++--------------+
+3 rows in set (0.01 sec)
+
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> SELECT PARK_NAME 
+    -> FROM THEMEPARK 
+    -> WHERE PARK_CODE<>ALL(SELECT DISTINCT PARK_CODE 
+    -> 
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 3
+mysql> SELECT PARK_NAME  FROM THEMEPARK  WHERE PARK_CODE<>ALL(SELECT DISTINCT PARK_CODE;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> SELECT PARK_NAME 
+    -> FROM THEMEPARK 
+    -> WHERE PARK_CODE<>ALL(SELECT DISTINCT PARK_CODE 
+    ->  FROM SALES);
++---------------+
+| PARK_NAME     |
++---------------+
+| Efling        |
+| AdventurePort |
+| Labyrinthe    |
+| MiniLand      |
++---------------+
+4 rows in set (0.00 sec)
+
+
+mysql> 

@@ -1,0 +1,253 @@
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> USE themepark;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> 
+mysql> #1. Write a query which lists the names and dates of births of all employees born on the 14th day of the month.
+mysql> SELECT EMP_FNAME, EMP_LNAME, EMP_DOB 
+    -> FROM EMPLOYEE 
+    -> WHERE DAY(EMP_DOB) = 14;
++-----------+-----------+------------+
+| EMP_FNAME | EMP_LNAME | EMP_DOB    |
++-----------+-----------+------------+
+| Arif      | Arshad    | 1969-11-14 |
+| Mirrelle  | Namowa    | 1990-03-14 |
++-----------+-----------+------------+
+2 rows in set (0.00 sec)
+
+mysql> 
+mysql> #2. Write a query which lists the approximate age of the employees on the company’s tenth anniversary date (11/25/2008).
+mysql> SELECT TIMESTAMPDIFF(year, EMP_DOB, '2008-11-25') 
+    ->   AS AGE_ON_ANNIVERSARY 
+    -> FROM EMPLOYEE;
++--------------------+
+| AGE_ON_ANNIVERSARY |
++--------------------+
+|                 36 |
+|                 30 |
+|                 39 |
+|                 34 |
+|                 28 |
+|                 18 |
+|                 40 |
++--------------------+
+7 rows in set (0.00 sec)
+
+mysql> 
+mysql> #3. Write a query which generates a list of employee user passwords, using the first three digits of their phone number, and the first two characters of first name in lower case.Label the column USER_PASSWORD;
+mysql> SELECT CONCAT( SUBSTR(EMP_PHONE,1,3), LOWER( SUBSTR(EMP_FNAME,1,2) ) ) 
+    ->   AS USER_PASSWORD 
+    -> FROM EMPLOYEE;
++---------------+
+| USER_PASSWORD |
++---------------+
+| 324em         |
+| 324ma         |
+| 675ar         |
+| 898an         |
+| 504en         |
+| 890mi         |
+| 324ge         |
++---------------+
+7 rows in set (0.00 sec)
+
+mysql> 
+mysql> #4. Write a query which displays the last date a ticket was purchased in all Theme Parks.You should also display the Theme Park name. Print the date in the format 12th January 2007.
+mysql> SELECT PARK_NAME, DATE_FORMAT( MAX(SALE_DATE),'%D %b %Y' ) 
+    -> FROM SALES 
+    -> NATURAL JOIN THEMEPARK
+    -> GROUP BY PARK_CODE;
++--------------+------------------------------------------+
+| PARK_NAME    | DATE_FORMAT( MAX(SALE_DATE),'%D %b %Y' ) |
++--------------+------------------------------------------+
+| FairyLand    | 18th May 2007                            |
+| PleasureLand | 18th May 2007                            |
+| GoldTown     | 18th May 2007                            |
++--------------+------------------------------------------+
+3 rows in set (0.00 sec)
+
+mysql> 
+mysql> #5. Using the date specifiers in Table 7.2, modify the query shown in Figure 55 to display the date in the format ’Fri – 18 – 5 – 07’.
+mysql> SELECT DISTINCT( DATE_FORMAT(SALE_DATE, '%a-%e-%c-%y') ) 
+    -> FROM SALES;
++-------------------------------------------+
+| ( DATE_FORMAT(SALE_DATE, '%a-%e-%c-%y') ) |
++-------------------------------------------+
+| Fri-18-5-07                               |
++-------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> 
+mysql> #You can use any already define database for the demonstration of TCL 
+mysql> 
+mysql> #o Disable the autocommit option as shown in log file
+mysql> SET AUTOCOMMIT=0;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> 
+mysql> #o Inset some data in any table, update some data in any table
+mysql> INSERT INTO SALES VALUE(1277, 'FR1001', '2020-08-08');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> 
+mysql> SELECT * 
+    -> FROM SALES;
++----------------+-----------+------------+
+| TRANSACTION_NO | PARK_CODE | SALE_DATE  |
++----------------+-----------+------------+
+|           1277 | FR1001    | 2020-08-08 |
+|          12781 | FR1001    | 2007-05-18 |
+|          12782 | FR1001    | 2007-05-18 |
+|          12783 | FR1001    | 2007-05-18 |
+|          12784 | FR1001    | 2007-05-18 |
+|          12785 | FR1001    | 2007-05-18 |
+|          12786 | FR1001    | 2007-05-18 |
+|          34534 | UK3452    | 2007-05-18 |
+|          34535 | UK3452    | 2007-05-18 |
+|          34536 | UK3452    | 2007-05-18 |
+|          34537 | UK3452    | 2007-05-18 |
+|          34538 | UK3452    | 2007-05-18 |
+|          34539 | UK3452    | 2007-05-18 |
+|          34540 | UK3452    | 2007-05-18 |
+|          34541 | UK3452    | 2007-05-18 |
+|          67589 | ZA1342    | 2007-05-18 |
+|          67590 | ZA1342    | 2007-05-18 |
+|          67591 | ZA1342    | 2007-05-18 |
+|          67592 | ZA1342    | 2007-05-18 |
+|          67593 | ZA1342    | 2007-05-18 |
++----------------+-----------+------------+
+20 rows in set (0.00 sec)
+
+mysql> 
+mysql> #o Now apply rollback and see the result
+mysql> ROLLBACK;
+Query OK, 0 rows affected (0.50 sec)
+
+mysql> 
+mysql> #o Do some more transactions of insert, update and delete. Afterwards add a savepoint 
+mysql> INSERT INTO SALES VALUE(1279, 'FR1001', '2020-08-08');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> 
+mysql> UPDATE SALES
+    -> SET PARK_CODE='ZA1342'
+    -> WHERE TRANSACTION_NO=1277; 
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+mysql> 
+mysql> DELETE FROM SALES
+    -> WHERE TRANSACTION_NO=1277;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> 
+mysql> SAVEPOINT savepnt;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> 
+mysql> SELECT * 
+    -> FROM SALES;
++----------------+-----------+------------+
+| TRANSACTION_NO | PARK_CODE | SALE_DATE  |
++----------------+-----------+------------+
+|           1279 | FR1001    | 2020-08-08 |
+|          12781 | FR1001    | 2007-05-18 |
+|          12782 | FR1001    | 2007-05-18 |
+|          12783 | FR1001    | 2007-05-18 |
+|          12784 | FR1001    | 2007-05-18 |
+|          12785 | FR1001    | 2007-05-18 |
+|          12786 | FR1001    | 2007-05-18 |
+|          34534 | UK3452    | 2007-05-18 |
+|          34535 | UK3452    | 2007-05-18 |
+|          34536 | UK3452    | 2007-05-18 |
+|          34537 | UK3452    | 2007-05-18 |
+|          34538 | UK3452    | 2007-05-18 |
+|          34539 | UK3452    | 2007-05-18 |
+|          34540 | UK3452    | 2007-05-18 |
+|          34541 | UK3452    | 2007-05-18 |
+|          67589 | ZA1342    | 2007-05-18 |
+|          67590 | ZA1342    | 2007-05-18 |
+|          67591 | ZA1342    | 2007-05-18 |
+|          67592 | ZA1342    | 2007-05-18 |
+|          67593 | ZA1342    | 2007-05-18 |
++----------------+-----------+------------+
+20 rows in set (0.00 sec)
+
+mysql> #o Insert 2 to 3 rows and then go back to previous savepoint and see the results.
+mysql> INSERT INTO SALES VALUE(1230, 'FR1001', '2020-08-08');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO SALES VALUE(1232, 'ZA1342', '2020-08-08');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> 
+mysql> SELECT * 
+    -> FROM SALES;
++----------------+-----------+------------+
+| TRANSACTION_NO | PARK_CODE | SALE_DATE  |
++----------------+-----------+------------+
+|           1230 | FR1001    | 2020-08-08 |
+|           1232 | ZA1342    | 2020-08-08 |
+|           1279 | FR1001    | 2020-08-08 |
+|          12781 | FR1001    | 2007-05-18 |
+|          12782 | FR1001    | 2007-05-18 |
+|          12783 | FR1001    | 2007-05-18 |
+|          12784 | FR1001    | 2007-05-18 |
+|          12785 | FR1001    | 2007-05-18 |
+|          12786 | FR1001    | 2007-05-18 |
+|          34534 | UK3452    | 2007-05-18 |
+|          34535 | UK3452    | 2007-05-18 |
+|          34536 | UK3452    | 2007-05-18 |
+|          34537 | UK3452    | 2007-05-18 |
+|          34538 | UK3452    | 2007-05-18 |
+|          34539 | UK3452    | 2007-05-18 |
+|          34540 | UK3452    | 2007-05-18 |
+|          34541 | UK3452    | 2007-05-18 |
+|          67589 | ZA1342    | 2007-05-18 |
+|          67590 | ZA1342    | 2007-05-18 |
+|          67591 | ZA1342    | 2007-05-18 |
+|          67592 | ZA1342    | 2007-05-18 |
+|          67593 | ZA1342    | 2007-05-18 |
++----------------+-----------+------------+
+22 rows in set (0.00 sec)
+
+mysql> 
+mysql> ROLLBACK TO savepnt;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> 
+mysql> SELECT * 
+    -> FROM SALES;
++----------------+-----------+------------+
+| TRANSACTION_NO | PARK_CODE | SALE_DATE  |
++----------------+-----------+------------+
+|           1279 | FR1001    | 2020-08-08 |
+|          12781 | FR1001    | 2007-05-18 |
+|          12782 | FR1001    | 2007-05-18 |
+|          12783 | FR1001    | 2007-05-18 |
+|          12784 | FR1001    | 2007-05-18 |
+|          12785 | FR1001    | 2007-05-18 |
+|          12786 | FR1001    | 2007-05-18 |
+|          34534 | UK3452    | 2007-05-18 |
+|          34535 | UK3452    | 2007-05-18 |
+|          34536 | UK3452    | 2007-05-18 |
+|          34537 | UK3452    | 2007-05-18 |
+|          34538 | UK3452    | 2007-05-18 |
+|          34539 | UK3452    | 2007-05-18 |
+|          34540 | UK3452    | 2007-05-18 |
+|          34541 | UK3452    | 2007-05-18 |
+|          67589 | ZA1342    | 2007-05-18 |
+|          67590 | ZA1342    | 2007-05-18 |
+|          67591 | ZA1342    | 2007-05-18 |
+|          67592 | ZA1342    | 2007-05-18 |
+|          67593 | ZA1342    | 2007-05-18 |
++----------------+-----------+------------+
+20 rows in set (0.00 sec)
+
+mysql> exit

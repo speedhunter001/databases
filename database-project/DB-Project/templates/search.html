@@ -1,0 +1,61 @@
+{% extends 'html.html' %}
+
+{% block content %}
+  <br>
+  <div class="container jumbotron text-center">
+      <h1>Search the area of crime </h1>
+  </div>
+
+<br>
+<div class="container">
+  <form method="POST">
+    <div class="form-group">
+      <label for="inputcelltowerno">Cell Tower Number</label>
+      <input type="number" class="form-control" id="inputcelltowerno" name="celltowerno" value="{{request.form.celltowerno}}">
+    </div>
+
+    <div class="form-group">
+      <label for="inputstarttime">Start Time</label>
+      <input type="time" class="form-control" id="inputstarttime" name="starttime" value="{{request.form.starttime}}">
+    </div>
+
+    <div class="form-group">
+      <label for="inputendtime">End Time</label>
+      <input type="time" class="form-control" id="inputendtime" name="endtime" value="{{request.form.endtime}}">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Search</button>
+
+  </form>
+
+
+</div>
+
+<br>
+<br>
+
+<div class="container jumbotron text-center">
+
+  {% for row in query_result %}  <!-- passed query result is displayed from pandas dataframe to be compatible with html -->
+      {{ titles[loop.index] }}
+      {{ row | safe }}
+  {% endfor %}
+
+</div>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<p style="text-align:center">Please do not search if you suspect a man of authority or our system will crash :)</p>
+
+{% endblock %}

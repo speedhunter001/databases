@@ -1,0 +1,123 @@
+1.
+mysql> 
+mysql> CREATE DEFINER = CURRENT_USER SQL SECURITY DEFINER
+    -> VIEW EMP_DETAILS AS SELECT EMP_NUM,PARK_CODE,PARK_NAME,EMP_LNAME,EMP_FNAME,EMP_HIRE_DATE,EMP_DOB
+    -> FROM EMPLOYEE 
+    -> NATURAL JOIN THEMEPARK;
+Query OK, 0 rows affected (0.04 sec)
+
+
+2.
+mysql> 
+mysql> 
+mysql> SELECT * 
+    -> FROM EMP_DETAILS;
++---------+-----------+--------------+------------+-----------+---------------+------------+
+| EMP_NUM | PARK_CODE | PARK_NAME    | EMP_LNAME  | EMP_FNAME | EMP_HIRE_DATE | EMP_DOB    |
++---------+-----------+--------------+------------+-----------+---------------+------------+
+|     100 | FR1001    | FairyLand    | Calderdale | Emma      | 1992-03-15    | 1972-06-15 |
+|     101 | UK3452    | PleasureLand | Ricardo    | Marshel   | 1996-04-25    | 1978-03-19 |
+|     102 | FR1001    | FairyLand    | Arshad     | Arif      | 1990-12-20    | 1969-11-14 |
+|     103 | UK3452    | PleasureLand | Roberts    | Anne      | 1994-08-16    | 1974-10-16 |
+|     104 | ZA1342    | GoldTown     | Denver     | Enrica    | 2001-10-20    | 1980-11-08 |
+|     105 | FR1001    | FairyLand    | Namowa     | Mirrelle  | 2006-11-08    | 1990-03-14 |
+|     106 | ZA1342    | GoldTown     | Smith      | Gemma     | 1989-01-05    | 1968-02-12 |
++---------+-----------+--------------+------------+-----------+---------------+------------+
+7 rows in set (0.00 sec)
+
+
+3.
+mysql> 
+mysql> 
+mysql> SELECT EMP_FNAME, EMP_LNAME, PARK_NAME
+    -> FROM EMP_DETAILS;
++-----------+------------+--------------+
+| EMP_FNAME | EMP_LNAME  | PARK_NAME    |
++-----------+------------+--------------+
+| Emma      | Calderdale | FairyLand    |
+| Marshel   | Ricardo    | PleasureLand |
+| Arif      | Arshad     | FairyLand    |
+| Anne      | Roberts    | PleasureLand |
+| Enrica    | Denver     | GoldTown     |
+| Mirrelle  | Namowa     | FairyLand    |
+| Gemma     | Smith      | GoldTown     |
++-----------+------------+--------------+
+7 rows in set (0.00 sec)
+
+
+4.
+mysql> CREATE USER ammar@localhost;
+Query OK, 0 rows affected (0.04 sec)
+
+
+5.
+mysql> GRANT ALL ON themepark.* TO ammar@localhost;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> GRANT ALL ON themepark.EMP_DETAILS TO ammar@localhost
+    -> ;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> GRANT CREATE ON *.* TO ammar@localhost;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> FLUSH PRIVILEGES;
+Query OK, 0 rows affected (0.00 sec)
+
+
+6.
+mysql> CREATE VIEW second_themepark AS
+    -> SELECT * FROM THEMEPARK;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> INSERT INTO second_themepark VALUES ("LL0000", "NOwhere", "Peshawar", "PK");
+Query OK, 1 row affected (0.05 sec)
+
+mysql> SELECT * FROM second_themepark;
++-----------+---------------+--------------+--------------+
+| PARK_CODE | PARK_NAME     | PARK_CITY    | PARK_COUNTRY |
++-----------+---------------+--------------+--------------+
+| FR1001    | FairyLand     | PARIS        | FR           |
+| LL0000    | NOwhere       | Peshawar     | PK           |
+| NL1202    | Efling        | NOORD        | NL           |
+| SP4533    | AdventurePort | BARCELONA    | SP           |
+| SW2323    | Labyrinthe    | LAUSANNE     | SW           |
+| UK2622    | MiniLand      | WINDSOR      | UK           |
+| UK3452    | PleasureLand  | STOKE        | UK           |
+| ZA1342    | GoldTown      | JOHANNESBURG | ZA           |
++-----------+---------------+--------------+--------------+
+8 rows in set (0.00 sec)
+
+mysql> SELECT * FROM THEMEPARK;
++-----------+---------------+--------------+--------------+
+| PARK_CODE | PARK_NAME     | PARK_CITY    | PARK_COUNTRY |
++-----------+---------------+--------------+--------------+
+| FR1001    | FairyLand     | PARIS        | FR           |
+| LL0000    | NOwhere       | Peshawar     | PK           |
+| NL1202    | Efling        | NOORD        | NL           |
+| SP4533    | AdventurePort | BARCELONA    | SP           |
+| SW2323    | Labyrinthe    | LAUSANNE     | SW           |
+| UK2622    | MiniLand      | WINDSOR      | UK           |
+| UK3452    | PleasureLand  | STOKE        | UK           |
+| ZA1342    | GoldTown      | JOHANNESBURG | ZA           |
++-----------+---------------+--------------+--------------+
+8 rows in set (0.00 sec)
+
+
+7.
+mysql> REVOKE CREATE ON *.* FROM ammar@localhost;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> show grants for ammar@localhost;
++--------------------------------------------------------------------------+
+| Grants for ammar@localhost                                               |
++--------------------------------------------------------------------------+
+| GRANT USAGE ON *.* TO 'ammar'@'localhost'                                |
+| GRANT ALL PRIVILEGES ON `themepark`.* TO 'ammar'@'localhost'             |
+| GRANT ALL PRIVILEGES ON `themepark`.`EMP_DETAILS` TO 'ammar'@'localhost' |
++--------------------------------------------------------------------------+
+3 rows in set (0.00 sec)
+
+mysql> flush privileges;
+Query OK, 0 rows affected (0.00 sec)
+

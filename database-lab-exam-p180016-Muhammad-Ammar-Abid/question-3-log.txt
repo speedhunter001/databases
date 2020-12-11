@@ -1,0 +1,452 @@
+mysql> 
+mysql> create database employee_lab_exam
+    -> ;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> use employee_lab_exam
+Database changed
+mysql> 
+mysql> CREATE TABLE employees (
+    -> employee_id INT (11) UNSIGNED NOT NULL,
+    -> first_name VARCHAR(20),
+    -> last_name VARCHAR(25) NOT NULL,
+    -> email VARCHAR(25) NOT NULL,
+    -> phone_number VARCHAR(20),
+    -> hire_date DATE NOT NULL,
+    -> job_id VARCHAR(10) NOT NULL,
+    -> salary DECIMAL(8, 2) NOT NULL,
+    -> commission_pct DECIMAL(2, 2),
+    -> manager_id INT (11) UNSIGNED,
+    -> department_id INT (11) UNSIGNED,
+    -> PRIMARY KEY (employee_id)
+    -> );
+Query OK, 0 rows affected (0.27 sec)
+
+mysql> 
+mysql> INSERT INTO employees VALUES (1,'Muhammad Ammar','Abid','p180016@nu.edu.pk','03409270296','2020-5-2', 'Data_Guy', 500, NULL, 100, 90);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> 
+mysql> source emp.sql;
+ERROR: 
+Failed to open file 'emp.sql', error: 2
+mysql> source emloyees.sql
+ERROR: 
+Failed to open file 'emloyees.sql', error: 2
+mysql> source employees.sql;
+ERROR 1050 (42S01): Table 'employees' already exists
+Query OK, 1 row affected (0.04 sec)
+
+Query OK, 1 row affected (0.06 sec)
+
+Query OK, 1 row affected (0.07 sec)
+
+Query OK, 1 row affected (0.04 sec)
+
+Query OK, 1 row affected (0.03 sec)
+
+Query OK, 1 row affected (0.03 sec)
+
+Query OK, 1 row affected (0.05 sec)
+
+Query OK, 1 row affected (0.03 sec)
+
+Query OK, 1 row affected (0.03 sec)
+
+Query OK, 1 row affected (0.03 sec)
+
+Query OK, 1 row affected (0.03 sec)
+
+Query OK, 1 row affected (0.04 sec)
+
+Query OK, 1 row affected (0.03 sec)
+
+Query OK, 1 row affected (0.04 sec)
+
+Query OK, 1 row affected (0.03 sec)
+
+Query OK, 1 row affected (0.03 sec)
+
+Query OK, 1 row affected (0.04 sec)
+
+Query OK, 1 row affected (0.03 sec)
+
+Query OK, 1 row affected (0.03 sec)
+
+Query OK, 1 row affected (0.05 sec)
+
+Query OK, 1 row affected (0.03 sec)
+
+Query OK, 1 row affected (0.04 sec)
+
+Query OK, 1 row affected (0.03 sec)
+
+Query OK, 1 row affected (0.03 sec)
+
+Query OK, 1 row affected (0.04 sec)
+
+Query OK, 1 row affected (0.03 sec)
+
+Query OK, 1 row affected (0.33 sec)
+
+Query OK, 1 row affected (0.04 sec)
+
+Query OK, 1 row affected (0.04 sec)
+
+Query OK, 1 row affected (0.03 sec)
+
+Query OK, 1 row affected (0.04 sec)
+
+Query OK, 1 row affected (0.03 sec)
+
+Query OK, 1 row affected (0.04 sec)
+
+Query OK, 1 row affected (0.03 sec)
+
+Query OK, 1 row affected (0.03 sec)
+
+Query OK, 1 row affected (0.04 sec)
+
+Query OK, 1 row affected (0.03 sec)
+
+Query OK, 1 row affected (0.03 sec)
+
+Query OK, 1 row affected (0.04 sec)
+
+Query OK, 1 row affected (0.03 sec)
+
+Query OK, 1 row affected (0.03 sec)
+
+Query OK, 1 row affected (0.04 sec)
+
+Query OK, 1 row affected (0.03 sec)
+
+Query OK, 1 row affected (0.03 sec)
+
+Query OK, 1 row affected (0.04 sec)
+
+Query OK, 1 row affected (0.03 sec)
+
+Query OK, 1 row affected (0.04 sec)
+
+Query OK, 1 row affected (0.03 sec)
+
+Query OK, 1 row affected (0.04 sec)
+
+Query OK, 1 row affected (0.03 sec)
+
+Query OK, 1 row affected (0.02 sec)
+
+Query OK, 1 row affected (0.04 sec)
+
+Query OK, 1 row affected (0.03 sec)
+
+Query OK, 1 row affected (0.03 sec)
+
+Query OK, 1 row affected (0.03 sec)
+
+Query OK, 1 row affected (0.04 sec)
+
+Query OK, 1 row affected (0.04 sec)
+
+Query OK, 1 row affected (0.05 sec)
+
+Query OK, 1 row affected (0.04 sec)
+
+Query OK, 1 row affected (0.05 sec)
+
+Query OK, 1 row affected (0.05 sec)
+
+Query OK, 1 row affected (0.04 sec)
+
+Query OK, 1 row affected (0.04 sec)
+
+Query OK, 1 row affected (0.05 sec)
+
+Query OK, 1 row affected (0.05 sec)
+
+Query OK, 1 row affected (0.04 sec)
+
+Query OK, 1 row affected (0.05 sec)
+
+Query OK, 1 row affected (0.04 sec)
+
+Query OK, 1 row affected (0.05 sec)
+
+Query OK, 1 row affected (0.04 sec)
+
+Query OK, 1 row affected (0.05 sec)
+
+Query OK, 1 row affected (0.05 sec)
+
+Query OK, 1 row affected (0.04 sec)
+
+Query OK, 1 row affected (0.04 sec)
+
+Query OK, 1 row affected (0.07 sec)
+
+Query OK, 1 row affected (0.04 sec)
+
+Query OK, 1 row affected (0.05 sec)
+
+Query OK, 1 row affected (0.04 sec)
+
+Query OK, 1 row affected (0.05 sec)
+
+Query OK, 1 row affected (0.05 sec)
+
+Query OK, 1 row affected (0.04 sec)
+
+Query OK, 1 row affected (0.04 sec)
+
+Query OK, 1 row affected (0.05 sec)
+
+Query OK, 1 row affected (0.05 sec)
+
+Query OK, 1 row affected (0.04 sec)
+
+Query OK, 1 row affected (0.05 sec)
+
+Query OK, 1 row affected (0.04 sec)
+
+Query OK, 1 row affected (0.35 sec)
+
+Query OK, 1 row affected (0.06 sec)
+
+Query OK, 1 row affected (0.05 sec)
+
+Query OK, 1 row affected (0.04 sec)
+
+Query OK, 1 row affected (0.05 sec)
+
+Query OK, 1 row affected (0.04 sec)
+
+Query OK, 1 row affected (0.05 sec)
+
+Query OK, 1 row affected (0.05 sec)
+
+Query OK, 1 row affected (0.04 sec)
+
+Query OK, 1 row affected (0.05 sec)
+
+Query OK, 1 row affected (0.04 sec)
+
+Query OK, 1 row affected (0.05 sec)
+
+Query OK, 1 row affected (0.04 sec)
+
+Query OK, 1 row affected (0.06 sec)
+
+Query OK, 1 row affected (0.04 sec)
+
+Query OK, 1 row affected (0.05 sec)
+
+Query OK, 1 row affected (0.06 sec)
+
+Query OK, 1 row affected (0.05 sec)
+
+Query OK, 1 row affected (0.04 sec)
+
+Query OK, 1 row affected (0.06 sec)
+
+mysql> 
+mysql> 
+mysql> #1
+mysql> SELECT manager_id, COUNT(employee_id)
+    -> FROM employees
+    -> GROUP BY manager_id;
++------------+--------------------+
+| manager_id | COUNT(employee_id) |
++------------+--------------------+
+|       NULL |                  1 |
+|        100 |                 15 |
+|        101 |                  5 |
+|        102 |                  1 |
+|        103 |                  4 |
+|        108 |                  5 |
+|        114 |                  5 |
+|        120 |                  8 |
+|        121 |                  8 |
+|        122 |                  8 |
+|        123 |                  8 |
+|        124 |                  8 |
+|        145 |                  6 |
+|        146 |                  6 |
+|        147 |                  6 |
+|        148 |                  6 |
+|        149 |                  6 |
+|        201 |                  1 |
+|        205 |                  1 |
++------------+--------------------+
+19 rows in set (0.00 sec)
+
+mysql> 
+mysql> #2 
+mysql> 
+mysql> SELECT last_name, salary, department_id FROM employees  
+mysql> NATURAL JOIN (SELECT department_id, MIN(salary) AS lowest_salary  
+mysql>  FROM employees   GROUP BY department_id)e2 
+mysql> WHERE salary = e2.lowest_salary;
++------------+----------+---------------+
+| last_name  | salary   | department_id |
++------------+----------+---------------+
+| Abid       |   500.00 |            90 |
+| Lorentz    |  4200.00 |            60 |
+| Popp       |  6900.00 |           100 |
+| Colmenares |  2500.00 |            30 |
+| Olson      |  2100.00 |            50 |
+| Kumar      |  6100.00 |            80 |
+| Whalen     |  4400.00 |            10 |
+| Fay        |  6000.00 |            20 |
+| Mavris     |  6500.00 |            40 |
+| Baer       | 10000.00 |            70 |
+| Gietz      |  8300.00 |           110 |
++------------+----------+---------------+
+11 rows in set (0.00 sec)
+
+mysql> 
+mysql> #3
+mysql> SELECT employee_id, last_name, job_id
+    -> FROM employees
+    -> WHERE salary < ANY(SELECT salary FROM employees WHERE job_id IN ('PU_CLERK','ST_CLERK','SH_CLERK'));
++-------------+-------------+----------+
+| employee_id | last_name   | job_id   |
++-------------+-------------+----------+
+|           1 | Abid        | Data_Guy |
+|         115 | Khoo        | PU_CLERK |
+|         116 | Baida       | PU_CLERK |
+|         117 | Tobias      | PU_CLERK |
+|         118 | Himuro      | PU_CLERK |
+|         119 | Colmenares  | PU_CLERK |
+|         125 | Nayer       | ST_CLERK |
+|         126 | Mikkilineni | ST_CLERK |
+|         127 | Landry      | ST_CLERK |
+|         128 | Markle      | ST_CLERK |
+|         129 | Bissot      | ST_CLERK |
+|         130 | Atkinson    | ST_CLERK |
+|         131 | Marlow      | ST_CLERK |
+|         132 | Olson       | ST_CLERK |
+|         133 | Mallin      | ST_CLERK |
+|         134 | Rogers      | ST_CLERK |
+|         135 | Gee         | ST_CLERK |
+|         136 | Philtanker  | ST_CLERK |
+|         137 | Ladwig      | ST_CLERK |
+|         138 | Stiles      | ST_CLERK |
+|         139 | Seo         | ST_CLERK |
+|         140 | Patel       | ST_CLERK |
+|         141 | Rajs        | ST_CLERK |
+|         142 | Davies      | ST_CLERK |
+|         143 | Matos       | ST_CLERK |
+|         144 | Vargas      | ST_CLERK |
+|         180 | Taylor      | SH_CLERK |
+|         181 | Fleaur      | SH_CLERK |
+|         182 | Sullivan    | SH_CLERK |
+|         183 | Geoni       | SH_CLERK |
+|         185 | Bull        | SH_CLERK |
+|         186 | Dellinger   | SH_CLERK |
+|         187 | Cabrio      | SH_CLERK |
+|         188 | Chung       | SH_CLERK |
+|         189 | Dilly       | SH_CLERK |
+|         190 | Gates       | SH_CLERK |
+|         191 | Perkins     | SH_CLERK |
+|         192 | Bell        | SH_CLERK |
+|         193 | Everett     | SH_CLERK |
+|         194 | McCain      | SH_CLERK |
+|         195 | Jones       | SH_CLERK |
+|         196 | Walsh       | SH_CLERK |
+|         197 | Feeney      | SH_CLERK |
+|         198 | OConnell    | SH_CLERK |
+|         199 | Grant       | SH_CLERK |
++-------------+-------------+----------+
+45 rows in set (0.00 sec)
+
+mysql> 
+mysql> #4
+mysql> SELECT employee_id, last_name, job_id
+    -> FROM employees
+    -> WHERE salary > (SELECT AVG(salary) FROM (SELECT DISTINCT(salary) FROM employees)e);
++-------------+------------+------------+
+| employee_id | last_name  | job_id     |
++-------------+------------+------------+
+|         100 | King       | AD_PRES    |
+|         101 | Kochhar    | AD_VP      |
+|         102 | De Haan    | AD_VP      |
+|         103 | Hunold     | IT_PROG    |
+|         108 | Greenberg  | FI_MGR     |
+|         109 | Faviet     | FI_ACCOUNT |
+|         110 | Chen       | FI_ACCOUNT |
+|         111 | Sciarra    | FI_ACCOUNT |
+|         112 | Urman      | FI_ACCOUNT |
+|         113 | Popp       | FI_ACCOUNT |
+|         114 | Raphaely   | PU_MAN     |
+|         120 | Weiss      | ST_MAN     |
+|         121 | Fripp      | ST_MAN     |
+|         122 | Kaufling   | ST_MAN     |
+|         145 | Russell    | SA_MAN     |
+|         146 | Partners   | SA_MAN     |
+|         147 | Errazuriz  | SA_MAN     |
+|         148 | Cambrault  | SA_MAN     |
+|         149 | Zlotkey    | SA_MAN     |
+|         150 | Tucker     | SA_REP     |
+|         151 | Bernstein  | SA_REP     |
+|         152 | Hall       | SA_REP     |
+|         153 | Olsen      | SA_REP     |
+|         154 | Cambrault  | SA_REP     |
+|         155 | Tuvault    | SA_REP     |
+|         156 | King       | SA_REP     |
+|         157 | Sully      | SA_REP     |
+|         158 | McEwen     | SA_REP     |
+|         159 | Smith      | SA_REP     |
+|         160 | Doran      | SA_REP     |
+|         161 | Sewall     | SA_REP     |
+|         162 | Vishney    | SA_REP     |
+|         163 | Greene     | SA_REP     |
+|         164 | Marvins    | SA_REP     |
+|         168 | Ozer       | SA_REP     |
+|         169 | Bloom      | SA_REP     |
+|         170 | Fox        | SA_REP     |
+|         171 | Smith      | SA_REP     |
+|         172 | Bates      | SA_REP     |
+|         174 | Abel       | SA_REP     |
+|         175 | Hutton     | SA_REP     |
+|         176 | Taylor     | SA_REP     |
+|         177 | Livingston | SA_REP     |
+|         178 | Grant      | SA_REP     |
+|         201 | Hartstein  | MK_MAN     |
+|         204 | Baer       | PR_REP     |
+|         205 | Higgins    | AC_MGR     |
+|         206 | Gietz      | AC_ACCOUNT |
++-------------+------------+------------+
+48 rows in set (0.00 sec)
+
+mysql> #5
+mysql> SELECT first_name, hire_date 
+    -> FROM employees
+    -> WHERE department_id = (SELECT department_id FROM employees WHERE first_name = 'Bruce') AND first_name <> 'Bruce';
++------------+------------+
+| first_name | hire_date  |
++------------+------------+
+| Alexander  | 1990-01-03 |
+| David      | 1997-06-25 |
+| Valli      | 1998-02-05 |
+| Diana      | 1999-02-07 |
++------------+------------+
+4 rows in set (0.00 sec)
+
+mysql> 
+mysql> #6
+mysql> SELECT job_id 
+mysql> FROM employees
+mysql> GROUP BY job_id 
+mysql> HAVING AVG(salary) > (SELECT MAX(salary)FROM employees WHERE job_id LIKE '%MGR') ;
++---------+
+| job_id  |
++---------+
+| AD_PRES |
+| AD_VP   |
+| MK_MAN  |
+| SA_MAN  |
++---------+
+4 rows in set (0.00 sec)
+
+mysql> exit
